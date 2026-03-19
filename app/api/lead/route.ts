@@ -30,8 +30,8 @@
       `Lang: ${lang}`,
       `Name: ${name}`,
       `Phone: ${phone}`,
-      `Industry: ${industry || "-"}`
-      `Business: ${business || "-"}`
+      `Industry: ${industry || "-"}`,
+      `Business: ${business || "-"}`,
       `Turnover: ${turnover || "-"}`,
       `Time: ${new Date().toISOString()}`,
     ].join("\n");
