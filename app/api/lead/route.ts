@@ -4,6 +4,8 @@
     const name = String(body?.name || "").trim();
     const phone = String(body?.phone || "").trim();
     const industry = String(body?.industry || "").trim();
+    const business = String(body?.business || "").trim();
+    const turnover = String(body?.turnover || "").trim();
     const lang = String(body?.lang || "uz").trim();
 
     if (!name || !phone) {
@@ -28,7 +30,9 @@
       `Lang: ${lang}`,
       `Name: ${name}`,
       `Phone: ${phone}`,
-      `Industry: ${industry || "-"}`,
+      `Industry: ${industry || "-"}`
+      `Business: ${business || "-"}`
+      `Turnover: ${turnover || "-"}`,
       `Time: ${new Date().toISOString()}`,
     ].join("\n");
 
