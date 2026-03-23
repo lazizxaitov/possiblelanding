@@ -58,7 +58,7 @@ const copy = {
     "Hisob-kitoblar noto'g'ri",
     "Excel yoki daftar bilan ishlaysiz",
   ],
-  squeeze: "Agar biznes tizimsiz ishlayotgan bo'lsa - u pul yo'qotadi",
+  squeeze: "Agar biznes tizimsiz ishlayotgan bo'lsa u pul yo'qotadi",
   solutionTitle: "Biz qanday yordam beramiz?",
   solutionText:
     "Biz sizning biznesingiz uchun maxsus IT tizim ishlab chiqamiz va joriy qilamiz. Bu tizim orqali:",
@@ -69,7 +69,7 @@ const copy = {
     "Mijozlar bilan ishlash tizimli bo'ladi",
   ],
   strongLine:
-    "Siz endi biznesni taxmin bilan emas - aniq raqamlar bilan boshqarasiz",
+    "Siz endi biznesni taxmin bilan emas aniq raqamlar bilan boshqarasiz",
   casesTitle: "Natijalar",
   cases: [
     {
@@ -113,6 +113,9 @@ const copy = {
   statusOk: "Ariza yuborildi!",
   statusErr: "Yuborishda xatolik. Qayta urinib ko'ring.",
   sending: "Yuborilmoqda...",
+  successTitle: "Ma?lumotlaringizni qabul qildik",
+  successBody: "Tez orada siz bilan bog?lanamiz. Agar kutishni xohlamasangiz bizga to?g?ridan to?g?ri qo?ng?iroq qiling!",
+  successCall: "+998998906273",
 };
 
 type Status = "idle" | "loading" | "success" | "error";
@@ -169,10 +172,6 @@ export default function Home() {
               height={240}
               priority
             />
-            <div className="brand-text">
-              <span>Possible</span>
-              <strong>Group</strong>
-            </div>
           </div>
           <p className="hero-title">{copy.heroTitle}</p>
           <p className="hero-subtitle">{copy.heroSubtitle}</p>
@@ -213,7 +212,6 @@ export default function Home() {
             <div className="cards grid-3">
               {copy.problems.map((item) => (
                 <article className="card problem" key={item}>
-                  <span className="badge">X</span>
                   <p>{item}</p>
                 </article>
               ))}
@@ -229,7 +227,6 @@ export default function Home() {
             <div className="cards grid-2">
               {copy.solutionPoints.map((item) => (
                 <article className="card" key={item}>
-                  <span className="badge">OK</span>
                   <p>{item}</p>
                 </article>
               ))}
@@ -259,7 +256,6 @@ export default function Home() {
             <div className="cards grid-2">
               {copy.trustItems.map((item) => (
                 <article className="card" key={item}>
-                  <span className="badge">OK</span>
                   <p>{item}</p>
                 </article>
               ))}
@@ -320,6 +316,22 @@ export default function Home() {
             <p className="helper">{copy.helper}</p>
           </div>
         </section>
+
+      {status === "success" && (
+        <div className="modal-backdrop" role="dialog" aria-modal="true">
+          <div className="modal">
+            <h3>{copy.successTitle}</h3>
+            <p>{copy.successBody}</p>
+            <a className="modal-call" href={`tel:${copy.successCall}`}>
+              {copy.successCall}
+            </a>
+            <button className="modal-close" onClick={() => setStatus("idle")}>
+              Yopish
+            </button>
+          </div>
+        </div>
+      )}
+
       </main>
 
       <footer className="footer">
