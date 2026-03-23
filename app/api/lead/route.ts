@@ -26,14 +26,13 @@
     }
 
     const text = [
-      "????? ??????",
+      "Yangi ariza",
       `????: ${lang}`,
-      `???: ${name}`,
-      `???????: ${phone}`,
-      `?????: ${industry || "-"}`,
-      `??????: ${business || "-"}`,
-      `??????: ${turnover || "-"}`,
-      `?????: ${new Date().toISOString()}`,
+      `Ism: ${name}`,
+      `Telefon: ${phone}`,
+      `Soha: ${industry || "-"}`,
+      `Biznes: ${business || "-"}`,
+      `Aylanish: ${turnover || "-"}`,
     ].join("\n");
 
     const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {

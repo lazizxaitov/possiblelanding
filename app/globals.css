@@ -45,7 +45,7 @@ a {
 
 .hero {
   text-align: center;
-  padding: 0.7rem 1rem 0.8rem;
+  padding: 0 0.7rem 0.15rem;
   background: radial-gradient(circle at 50% 0%, rgba(17, 17, 17, 0.08), transparent 45%);
 }
 
@@ -53,19 +53,23 @@ a {
   width: min(1040px, 100%);
   margin: 0 auto;
   display: grid;
-  gap: 0.3rem;
+  gap: 0.1rem;
   justify-items: center;
 }
 
 .brand {
   display: grid;
-  gap: 0.8rem;
+  gap: 0rem;
   justify-items: center;
+  margin-top: -2.8rem;
 }
 
 .brand img {
   width: 360px;
   height: 360px;
+  margin: 0 0 -3.6rem 0;
+  padding: 0;
+  display: block;
 }
 
 .brand-text {
@@ -76,7 +80,7 @@ a {
 }
 
 .hero-title {
-  margin: 0.05rem 0 0;
+  margin: 0;
   margin-bottom: 0.4rem;
   font-weight: 700;
   font-family: var(--font-serif), serif;
@@ -165,7 +169,7 @@ a {
   border: 1px solid rgba(17, 17, 17, 0.08);
   box-shadow: 0 12px 24px rgba(17, 17, 17, 0.08);
   display: grid;
-  gap: 0.3rem;
+  gap: 0.1rem;
 }
 
 .card p {
@@ -209,7 +213,7 @@ a {
 
 .form label {
   display: grid;
-  gap: 0.3rem;
+  gap: 0.1rem;
   font-size: 0.9rem;
   text-align: left;
 }
@@ -288,7 +292,7 @@ a {
   overflow: hidden;
   position: relative;
   --row-h: 88px;
-  --gap: 0.3rem;
+  --gap: 0.1rem;
   height: calc(var(--row-h) * 2 + var(--gap));
 }
 

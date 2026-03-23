@@ -115,7 +115,7 @@ const copy = {
   sending: "Yuborilmoqda...",
   successTitle: "Ma'lumotlaringizni qabul qildik",
   successBody: "Tez orada siz bilan bog'lanamiz. Agar kutishni xohlamasangiz bizga to'g'ridan to'g'ri qo'ng'iroq qiling!",
-  successCall: "+998998906273",
+  successCall: "+998958331020",
 };
 
 type Status = "idle" | "loading" | "success" | "error";
@@ -311,11 +311,7 @@ export default function Home() {
           <div className="section-inner">
             <div className="final-block">
               <p className="final-text">{copy.finalText}</p>
-              <a className="cta" href="#form">
-                {copy.finalCta}
-              </a>
-              <p className="helper">{copy.helper}</p>
-            </div>
+                          </div>
           </div>
         </section>
 
