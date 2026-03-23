@@ -309,11 +309,13 @@ export default function Home() {
 
         <section className="section" id="final">
           <div className="section-inner">
-            <p className="final-text">{copy.finalText}</p>
-            <a className="cta" href="#form">
-              {copy.finalCta}
-            </a>
-            <p className="helper">{copy.helper}</p>
+            <div className="final-block">
+              <p className="final-text">{copy.finalText}</p>
+              <a className="cta" href="#form">
+                {copy.finalCta}
+              </a>
+              <p className="helper">{copy.helper}</p>
+            </div>
           </div>
         </section>
 

@@ -53,7 +53,7 @@ a {
   width: min(1040px, 100%);
   margin: 0 auto;
   display: grid;
-  gap: 0.25rem;
+  gap: 1rem;
   justify-items: center;
 }
 
@@ -452,4 +452,9 @@ a {
   color: var(--muted);
   font-weight: 600;
   cursor: pointer;
+}
+
+.final-block {
+  display: grid;
+  gap: 1.2rem;
 }
