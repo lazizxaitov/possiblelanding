@@ -1,6 +1,14 @@
+"use client";
+
 ﻿import Image from "next/image";
+import { useEffect } from "react";
 
 export default function SuccessPage() {
+  useEffect(() => {
+    if (typeof window !== "undefined" && (window as any).fbq) {
+      (window as any).fbq("track", "Lead");
+    }
+  }, []);
   return (
     <div className="lp">
       <header className="hero" id="top">
