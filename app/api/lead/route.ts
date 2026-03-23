@@ -26,14 +26,14 @@
     }
 
     const text = [
-      "New lead",
-      `Lang: ${lang}`,
-      `Name: ${name}`,
-      `Phone: ${phone}`,
-      `Industry: ${industry || "-"}`,
-      `Business: ${business || "-"}`,
-      `Turnover: ${turnover || "-"}`,
-      `Time: ${new Date().toISOString()}`,
+      "????? ??????",
+      `????: ${lang}`,
+      `???: ${name}`,
+      `???????: ${phone}`,
+      `?????: ${industry || "-"}`,
+      `??????: ${business || "-"}`,
+      `??????: ${turnover || "-"}`,
+      `?????: ${new Date().toISOString()}`,
     ].join("\n");
 
     const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {

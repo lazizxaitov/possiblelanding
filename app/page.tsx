@@ -113,8 +113,8 @@ const copy = {
   statusOk: "Ariza yuborildi!",
   statusErr: "Yuborishda xatolik. Qayta urinib ko'ring.",
   sending: "Yuborilmoqda...",
-  successTitle: "Ma?lumotlaringizni qabul qildik",
-  successBody: "Tez orada siz bilan bog?lanamiz. Agar kutishni xohlamasangiz bizga to?g?ridan to?g?ri qo?ng?iroq qiling!",
+  successTitle: "Ma'lumotlaringizni qabul qildik",
+  successBody: "Tez orada siz bilan bog'lanamiz. Agar kutishni xohlamasangiz bizga to'g'ridan to'g'ri qo'ng'iroq qiling!",
   successCall: "+998998906273",
 };
 
