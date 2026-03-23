@@ -25,7 +25,6 @@
 
     const text = [
       "Yangi ariza",
-      `????: ${lang}`,
       `Ism: ${name}`,
       `Telefon: ${phone}`,
       `Soha: ${industry || "-"}`,
