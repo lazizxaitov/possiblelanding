@@ -2,6 +2,27 @@
 
 import Image from "next/image";
 import { useState, type FormEvent } from "react";
+import { useRouter } from "next/navigation";
+
+const emojiUrls = {
+  cross: "https://twemoji.maxcdn.com/v/latest/svg/274c.svg",
+  chart: "https://twemoji.maxcdn.com/v/latest/svg/1f4ca.svg",
+  money: "https://twemoji.maxcdn.com/v/latest/svg/1f4b0.svg",
+  worker: "https://twemoji.maxcdn.com/v/latest/svg/1f468-200d-1f4bc.svg",
+  repeat: "https://twemoji.maxcdn.com/v/latest/svg/1f501.svg",
+  box: "https://twemoji.maxcdn.com/v/latest/svg/1f4e6.svg",
+  plate: "https://twemoji.maxcdn.com/v/latest/svg/1f37d.svg",
+  calendar: "https://twemoji.maxcdn.com/v/latest/svg/1f4c5.svg",
+  briefcase: "https://twemoji.maxcdn.com/v/latest/svg/1f4bc.svg",
+  trophy: "https://twemoji.maxcdn.com/v/latest/svg/1f3c6.svg",
+  coder: "https://twemoji.maxcdn.com/v/latest/svg/1f468-200d-1f4bb.svg",
+  shuffle: "https://twemoji.maxcdn.com/v/latest/svg/1f500.svg",
+  search: "https://twemoji.maxcdn.com/v/latest/svg/1f50e.svg",
+  moneyBill: "https://twemoji.maxcdn.com/v/latest/svg/1f4b5.svg",
+  eyes: "https://twemoji.maxcdn.com/v/latest/svg/1f440.svg",
+  paper: "https://twemoji.maxcdn.com/v/latest/svg/1f4c3.svg",
+  tabs: "https://twemoji.maxcdn.com/v/latest/svg/1f4d1.svg",
+};
 
 const partnerLogos = [
   "/partners/partner-01.png",
@@ -39,11 +60,23 @@ const partnerLogos = [
   "/partners/partner-34.png",
 ];
 
-
 const topLogos = partnerLogos;
 const bottomLogos = partnerLogos.slice(Math.floor(partnerLogos.length / 2)).concat(
   partnerLogos.slice(0, Math.floor(partnerLogos.length / 2))
 );
+
+const problemIcons = [
+  emojiUrls.shuffle,
+  emojiUrls.search,
+  emojiUrls.moneyBill,
+  emojiUrls.eyes,
+  emojiUrls.paper,
+  emojiUrls.tabs,
+];
+
+const solutionIcons = [emojiUrls.chart, emojiUrls.money, emojiUrls.worker, emojiUrls.repeat];
+const caseIcons = [emojiUrls.box, emojiUrls.plate];
+const trustIcons = [emojiUrls.calendar, emojiUrls.briefcase, emojiUrls.coder, emojiUrls.trophy];
 
 const copy = {
   heroTitle: "Biznesingizda pul yo'qotyapsizmi?",
@@ -114,7 +147,8 @@ const copy = {
   statusErr: "Yuborishda xatolik. Qayta urinib ko'ring.",
   sending: "Yuborilmoqda...",
   successTitle: "Ma'lumotlaringizni qabul qildik",
-  successBody: "Tez orada siz bilan bog'lanamiz. Agar kutishni xohlamasangiz bizga to'g'ridan to'g'ri qo'ng'iroq qiling!",
+  successBody:
+    "Tez orada siz bilan bog'lanamiz. Agar kutishni xohlamasangiz bizga to'g'ridan to'g'ri qo'ng'iroq qiling!",
   successCall: "+998958331020",
 };
 
@@ -123,6 +157,21 @@ type Status = "idle" | "loading" | "success" | "error";
 export default function Home() {
   const [status, setStatus] = useState<Status>("idle");
   const [statusMessage, setStatusMessage] = useState("");
+  const [phoneValue, setPhoneValue] = useState("+998 ");
+  const router = useRouter();
+
+  const ensurePhonePrefix = (value: string) => {
+    const cleaned = value.replace(/[^0-9+]/g, "");
+    if (!cleaned.startsWith("+998")) {
+      return "+998 ";
+    }
+    return cleaned.replace("+998", "+998 ");
+  };
+
+  const onPhoneChange = (value: string) => {
+    const withPrefix = ensurePhonePrefix(value);
+    setPhoneValue(withPrefix);
+  };
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -133,7 +182,7 @@ export default function Home() {
     const formData = new FormData(form);
     const payload = {
       name: String(formData.get("name") || "").trim(),
-      phone: String(formData.get("phone") || "").trim(),
+      phone: String(formData.get("phone") || "").replace(/\s+/g, "").trim(),
       business: String(formData.get("business") || "").trim(),
       turnover: String(formData.get("turnover") || "").trim(),
       lang: "uz",
@@ -150,6 +199,8 @@ export default function Home() {
         setStatus("success");
         setStatusMessage(copy.statusOk);
         form.reset();
+        setPhoneValue("+998 ");
+        router.push("/success");
       } else {
         setStatus("error");
         setStatusMessage(copy.statusErr);
@@ -183,7 +234,6 @@ export default function Home() {
       </header>
 
       <main>
-
         <section className="section" id="partners">
           <div className="section-inner">
             <h2>Hamkorlarimiz</h2>
@@ -196,7 +246,7 @@ export default function Home() {
                 ))}
               </div>
               <div className="partners-track track-right">
-                {topLogos.concat(topLogos).map((logo, index) => (
+                {bottomLogos.concat(bottomLogos).map((logo, index) => (
                   <div className="partner-card" key={`bottom-${logo}-${index}`}>
                     <Image src={logo} alt="Partner logo" width={150} height={80} />
                   </div>
@@ -210,8 +260,9 @@ export default function Home() {
           <div className="section-inner">
             <h2>{copy.problemsTitle}</h2>
             <div className="cards grid-3">
-              {copy.problems.map((item) => (
+              {copy.problems.map((item, index) => (
                 <article className="card problem" key={item}>
+                  <img className="emoji-img" src={problemIcons[index]} alt="" aria-hidden="true" />
                   <p>{item}</p>
                 </article>
               ))}
@@ -225,8 +276,9 @@ export default function Home() {
             <h2>{copy.solutionTitle}</h2>
             <p>{copy.solutionText}</p>
             <div className="cards grid-2">
-              {copy.solutionPoints.map((item) => (
+              {copy.solutionPoints.map((item, index) => (
                 <article className="card" key={item}>
+                  <img className="emoji-img" src={solutionIcons[index]} alt="" aria-hidden="true" />
                   <p>{item}</p>
                 </article>
               ))}
@@ -239,8 +291,9 @@ export default function Home() {
           <div className="section-inner">
             <h2>{copy.casesTitle}</h2>
             <div className="cards grid-2">
-              {copy.cases.map((item) => (
+              {copy.cases.map((item, index) => (
                 <article className="card" key={item.name}>
+                  <img className="emoji-img" src={caseIcons[index]} alt="" aria-hidden="true" />
                   <h3>{item.name}</h3>
                   <p>{item.before}</p>
                   <p>{item.after}</p>
@@ -254,8 +307,9 @@ export default function Home() {
           <div className="section-inner">
             <h2>{copy.trustTitle}</h2>
             <div className="cards grid-2">
-              {copy.trustItems.map((item) => (
+              {copy.trustItems.map((item, index) => (
                 <article className="card" key={item}>
+                  <img className="emoji-img" src={trustIcons[index]} alt="" aria-hidden="true" />
                   <p>{item}</p>
                 </article>
               ))}
@@ -281,7 +335,15 @@ export default function Home() {
               </label>
               <label>
                 {copy.phone}
-                <input name="phone" type="tel" placeholder={copy.phone} required />
+                <input
+                  name="phone"
+                  type="tel"
+                  placeholder={copy.phone}
+                  value={phoneValue}
+                  onChange={(e) => onPhoneChange(e.target.value)}
+                  onFocus={(e) => onPhoneChange(e.target.value)}
+                  required
+                />
               </label>
               <label>
                 {copy.business}
@@ -311,25 +373,24 @@ export default function Home() {
           <div className="section-inner">
             <div className="final-block">
               <p className="final-text">{copy.finalText}</p>
-                          </div>
+            </div>
           </div>
         </section>
 
-      {status === "success" && (
-        <div className="modal-backdrop" role="dialog" aria-modal="true">
-          <div className="modal">
-            <h3>{copy.successTitle}</h3>
-            <p>{copy.successBody}</p>
-            <a className="modal-call" href={`tel:${copy.successCall}`}>
-              {copy.successCall}
-            </a>
-            <button className="modal-close" onClick={() => setStatus("idle")}>
-              Yopish
-            </button>
+        {status === "success" && (
+          <div className="modal-backdrop" role="dialog" aria-modal="true">
+            <div className="modal">
+              <h3>{copy.successTitle}</h3>
+              <p>{copy.successBody}</p>
+              <a className="modal-call" href={`tel:${copy.successCall}`}>
+                {copy.successCall}
+              </a>
+              <button className="modal-close" onClick={() => setStatus("idle")}>
+                Yopish
+              </button>
+            </div>
           </div>
-        </div>
-      )}
-
+        )}
       </main>
 
       <footer className="footer">
