@@ -30,7 +30,7 @@ body {
 body {
   background: var(--bg);
   color: var(--ink);
-  font-family: "Noto Color Emoji", "Segoe UI Emoji", "Apple Color Emoji", var(--font-space), system-ui, -apple-system, "Segoe UI", "Noto Sans", sans-serif;
+  font-family: var(--font-space), system-ui, -apple-system, "Segoe UI", "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
 }
 
 a {
@@ -475,25 +475,6 @@ a {
 }
 
 
-.emoji-img {
-  width: 18px;
-  height: 18px;
-  display: inline-block;
-}
-
-.card .emoji-img {
-  margin-bottom: 0.2rem;
-}
-
-#solution .emoji-img {
-  width: 20px;
-  height: 20px;
-}
-
-#cases .emoji-img {
-  width: 20px;
-  height: 20px;
-}
 
 
 .cta.secondary {
