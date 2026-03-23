@@ -105,7 +105,7 @@ const copy = {
     "50 000$ - 100 000$",
     "100 000$ +",
   ],
-  send: "Audit olish",
+  send: "Bepul audit olish",
   finalText:
     "Bugun qaror qabul qilmasangiz - muammo ertaga ham qoladi. Va siz yana pul yo'qotishda davom etasiz",
   finalCta: "Bepul audit olish",
@@ -194,7 +194,7 @@ export default function Home() {
           <p className="hero-title">{copy.heroTitle}</p>
           <p className="hero-subtitle">{copy.heroSubtitle}</p>
           <a className="cta" href="#form">
-            {copy.send} {"->"}
+            {copy.send}
           </a>
           <p className="helper">{copy.helper}</p>
         </div>
