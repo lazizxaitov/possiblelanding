@@ -6,8 +6,6 @@
     const industry = String(body?.industry || "").trim();
     const business = String(body?.business || "").trim();
     const turnover = String(body?.turnover || "").trim();
-    const lang = String(body?.lang || "uz").trim();
-
     if (!name || !phone) {
       return new Response(JSON.stringify({ ok: false, error: "missing_fields" }), {
         status: 400,

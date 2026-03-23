@@ -494,3 +494,12 @@ a {
   width: 20px;
   height: 20px;
 }
+
+
+.cta.secondary {
+  margin-top: 0.6rem;
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  box-shadow: none;
+}

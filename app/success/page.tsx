@@ -20,6 +20,7 @@ export default function SuccessPage() {
             to'g'ridan to'g'ri qo'ng'iroq qiling.
           </p>
           <a className="cta" href="tel:+998958331020">+998958331020</a>
+          <a className="cta secondary" href="/">Ortga qaytish</a>
         </div>
       </header>
     </div>
