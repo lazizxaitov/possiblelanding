@@ -3,10 +3,11 @@
     const body = await request.json();
     const name = String(body?.name || "").trim();
     const phone = String(body?.phone || "").trim();
+    const phoneDigits = phone.replace(/\D/g, "");
     const industry = String(body?.industry || "").trim();
     const business = String(body?.business || "").trim();
     const turnover = String(body?.turnover || "").trim();
-    if (!name || !phone) {
+    if (!name || !phone || phoneDigits.length < 12) {
       return new Response(JSON.stringify({ ok: false, error: "missing_fields" }), {
         status: 400,
         headers: { "Content-Type": "application/json" },

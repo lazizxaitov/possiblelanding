@@ -124,19 +124,27 @@ type Status = "idle" | "loading" | "success" | "error";
 export default function Home() {
   const [status, setStatus] = useState<Status>("idle");
   const [statusMessage, setStatusMessage] = useState("");
-  const [phoneValue, setPhoneValue] = useState("+998 ");
+  const [phoneValue, setPhoneValue] = useState("+998");
   const router = useRouter();
 
-  const ensurePhonePrefix = (value: string) => {
-    const cleaned = value.replace(/[^0-9+]/g, "");
-    if (!cleaned.startsWith("+998")) {
-      return "+998 ";
-    }
-    return cleaned.replace("+998", "+998 ");
+  const formatUzPhone = (raw: string) => {
+    const digits = raw.replace(/\D/g, "");
+    const national = digits.startsWith("998") ? digits.slice(3) : digits;
+    const p1 = national.slice(0, 2);
+    const p2 = national.slice(2, 5);
+    const p3 = national.slice(5, 7);
+    const p4 = national.slice(7, 9);
+    let formatted = "+998";
+    if (p1) formatted += ` ${p1}`;
+    if (p2) formatted += ` ${p2}`;
+    if (p3) formatted += ` ${p3}`;
+    if (p4) formatted += ` ${p4}`;
+    return formatted;
   };
 
   const onPhoneChange = (value: string) => {
-    const withPrefix = ensurePhonePrefix(value);
+    setPhoneValue(formatUzPhone(value));
+  };
     setPhoneValue(withPrefix);
   };
 
@@ -147,6 +155,14 @@ export default function Home() {
 
     const form = event.currentTarget;
     const formData = new FormData(form);
+    const digitsOnly = (payloadPhone: string) => payloadPhone.replace(/\D/g, "");
+    const phoneDigits = digitsOnly(String(formData.get("phone") || ""));
+    if (phoneDigits.length < 12) {
+      setStatus("error");
+      setStatusMessage("Telefon raqami to'liq emas");
+      return;
+    }
+
     const payload = {
       name: String(formData.get("name") || "").trim(),
       phone: String(formData.get("phone") || "").replace(/\s+/g, "").trim(),
@@ -166,7 +182,7 @@ export default function Home() {
         setStatus("success");
         setStatusMessage(copy.statusOk);
         form.reset();
-        setPhoneValue("+998 ");
+        setPhoneValue("+998");
         router.push("/success");
       } else {
         setStatus("error");
@@ -305,12 +321,14 @@ export default function Home() {
                   value={phoneValue}
                   onChange={(e) => onPhoneChange(e.target.value)}
                   onFocus={(e) => onPhoneChange(e.target.value)}
+                  pattern="\+998\s\d{2}\s\d{3}\s\d{2}\s\d{2}"
+                  minLength={17}
                   required
                 />
               </label>
               <label>
                 {copy.business}
-                <input name="business" type="text" placeholder={copy.business} />
+                <input name="business" type="text" placeholder={copy.business} required />
               </label>
               <label>
                 {copy.turnover}
