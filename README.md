@@ -18,7 +18,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## Environment
 
-The lead form posts to amoCRM through `/api/lead`.
+The lead form posts each submission to amoCRM and Telegram through `/api/lead`.
 
 Set these variables in `.env.local`:
 
@@ -29,6 +29,8 @@ Set these variables in `.env.local`:
 - `AMOCRM_FORM_NAME` defaults to `Bepul audit olish`
 - `AMOCRM_BUSINESS_FIELD_ID` defaults to `1787113`
 - `AMOCRM_TURNOVER_FIELD_ID` defaults to `1787115`
+- `TELEGRAM_BOT_TOKEN`
+- `TELEGRAM_CHAT_ID`
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
