@@ -145,12 +145,9 @@ export default function Home() {
   const onPhoneChange = (value: string) => {
     setPhoneValue(formatUzPhone(value));
   };
-    setPhoneValue(withPrefix);
-  };
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setStatus("loading");
     setStatusMessage("");
 
     const form = event.currentTarget;
@@ -162,6 +159,8 @@ export default function Home() {
       setStatusMessage("Telefon raqami to'liq emas");
       return;
     }
+
+    setStatus("loading");
 
     const payload = {
       name: String(formData.get("name") || "").trim(),
@@ -243,7 +242,7 @@ export default function Home() {
           <div className="section-inner">
             <h2>{copy.problemsTitle}</h2>
             <div className="cards grid-3">
-              {copy.problems.map((item, index) => (
+              {copy.problems.map((item) => (
                 <article className="card problem" key={item}>
                   <p>{item}</p>
                 </article>
@@ -258,7 +257,7 @@ export default function Home() {
             <h2>{copy.solutionTitle}</h2>
             <p>{copy.solutionText}</p>
             <div className="cards grid-2">
-              {copy.solutionPoints.map((item, index) => (
+              {copy.solutionPoints.map((item) => (
                 <article className="card" key={item}>
                   <p>{item}</p>
                 </article>
@@ -287,7 +286,7 @@ export default function Home() {
           <div className="section-inner">
             <h2>{copy.trustTitle}</h2>
             <div className="cards grid-2">
-              {copy.trustItems.map((item, index) => (
+              {copy.trustItems.map((item) => (
                 <article className="card" key={item}>
                   <p>{item}</p>
                 </article>

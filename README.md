@@ -16,6 +16,20 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## Environment
+
+The lead form posts to amoCRM through `/api/lead`.
+
+Set these variables in `.env.local`:
+
+- `AMOCRM_ACCESS_TOKEN`
+- `AMOCRM_SUBDOMAIN` defaults to `possgroup`
+- `AMOCRM_SOURCE_NAME` defaults to `Bepul audit olish formasi`
+- `AMOCRM_FORM_ID` defaults to `bepul_audit_olish`
+- `AMOCRM_FORM_NAME` defaults to `Bepul audit olish`
+- `AMOCRM_BUSINESS_FIELD_ID` defaults to `1787113`
+- `AMOCRM_TURNOVER_FIELD_ID` defaults to `1787115`
+
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.

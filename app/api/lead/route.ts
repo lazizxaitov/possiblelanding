@@ -1,62 +1,113 @@
-﻿export async function POST(request: Request) {
+const AMOCRM_SUBDOMAIN = process.env.AMOCRM_SUBDOMAIN || "possgroup";
+const AMOCRM_TOKEN = process.env.AMOCRM_ACCESS_TOKEN;
+const AMOCRM_SOURCE_NAME = process.env.AMOCRM_SOURCE_NAME || "Bepul audit olish formasi";
+const AMOCRM_FORM_ID = process.env.AMOCRM_FORM_ID || "bepul_audit_olish";
+const AMOCRM_FORM_NAME = process.env.AMOCRM_FORM_NAME || "Bepul audit olish";
+const BUSINESS_FIELD_ID = Number(process.env.AMOCRM_BUSINESS_FIELD_ID || 1787113);
+const TURNOVER_FIELD_ID = Number(process.env.AMOCRM_TURNOVER_FIELD_ID || 1787115);
+
+function jsonResponse(payload: Record<string, unknown>, status = 200) {
+  return new Response(JSON.stringify(payload), {
+    status,
+    headers: { "Content-Type": "application/json" },
+  });
+}
+
+export async function POST(request: Request) {
   try {
     const body = await request.json();
     const name = String(body?.name || "").trim();
     const phone = String(body?.phone || "").trim();
     const phoneDigits = phone.replace(/\D/g, "");
-    const industry = String(body?.industry || "").trim();
     const business = String(body?.business || "").trim();
     const turnover = String(body?.turnover || "").trim();
+
     if (!name || !phone || phoneDigits.length < 12) {
-      return new Response(JSON.stringify({ ok: false, error: "missing_fields" }), {
-        status: 400,
-        headers: { "Content-Type": "application/json" },
-      });
+      return jsonResponse({ ok: false, error: "missing_fields" }, 400);
     }
 
-    const token = process.env.TELEGRAM_BOT_TOKEN;
-    const chatId = process.env.TELEGRAM_CHAT_ID;
-
-    if (!token || !chatId) {
-      return new Response(JSON.stringify({ ok: false, error: "missing_env" }), {
-        status: 500,
-        headers: { "Content-Type": "application/json" },
-      });
+    if (!AMOCRM_TOKEN) {
+      return jsonResponse({ ok: false, error: "missing_env" }, 500);
     }
 
-    const text = [
-      "Yangi ariza",
-      `Ism: ${name}`,
-      `Telefon: ${phone}`,
-      `Soha: ${industry || "-"}`,
-      `Biznes: ${business || "-"}`,
-      `Aylanish: ${turnover || "-"}`,
-    ].join("\n");
+    const now = Math.floor(Date.now() / 1000);
+    const sourceUid = `site-form-${crypto.randomUUID().toLowerCase()}`;
+    const origin = request.headers.get("origin") || new URL(request.url).origin;
+    const referer = request.headers.get("referer") || origin;
 
-    const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        chat_id: chatId,
-        text,
-      }),
-    });
+    const payload = [
+      {
+        request_id: sourceUid,
+        source_name: AMOCRM_SOURCE_NAME,
+        source_uid: sourceUid,
+        created_at: now,
+        _embedded: {
+          leads: [
+            {
+              name: `saytdan kegan lid + ${name}`,
+              price: 0,
+              custom_fields_values: [
+                {
+                  field_id: BUSINESS_FIELD_ID,
+                  values: [{ value: business }],
+                },
+                {
+                  field_id: TURNOVER_FIELD_ID,
+                  values: [{ value: turnover }],
+                },
+              ],
+            },
+          ],
+          contacts: [
+            {
+              name,
+              custom_fields_values: [
+                {
+                  field_code: "PHONE",
+                  values: [{ value: phone, enum_code: "WORK" }],
+                },
+              ],
+            },
+          ],
+        },
+        metadata: {
+          form_id: AMOCRM_FORM_ID,
+          form_name: AMOCRM_FORM_NAME,
+          form_page: origin,
+          form_sent_at: now,
+          referer,
+        },
+      },
+    ];
+
+    const res = await fetch(
+      `https://${AMOCRM_SUBDOMAIN}.amocrm.ru/api/v4/leads/unsorted/forms`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${AMOCRM_TOKEN}`,
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(payload),
+      }
+    );
 
     if (!res.ok) {
-      return new Response(JSON.stringify({ ok: false, error: "telegram_error" }), {
-        status: 502,
-        headers: { "Content-Type": "application/json" },
-      });
+      const errorText = await res.text().catch(() => "");
+      return jsonResponse(
+        {
+          ok: false,
+          error: "amocrm_error",
+          status: res.status,
+          details: errorText || null,
+        },
+        502
+      );
     }
 
-    return new Response(JSON.stringify({ ok: true }), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
+    return jsonResponse({ ok: true });
   } catch {
-    return new Response(JSON.stringify({ ok: false, error: "bad_request" }), {
-      status: 400,
-      headers: { "Content-Type": "application/json" },
-    });
+    return jsonResponse({ ok: false, error: "bad_request" }, 400);
   }
 }

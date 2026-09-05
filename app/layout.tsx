@@ -1,7 +1,10 @@
-﻿import type { Metadata } from "next";
+/* eslint-disable @next/next/no-img-element */
+import type { Metadata } from "next";
 import Script from "next/script";
+import { Suspense } from "react";
 import { Space_Grotesk, Fraunces } from "next/font/google";
 import "./globals.css";
+import YandexMetrika from "./yandex-metrika";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space",
@@ -43,8 +46,22 @@ export default function RootLayout({
             fbq('track', 'PageView');`,
           }}
         />
+        <Script
+          id="yandex-metrika"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+            m[i].l=1*new Date();for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+            k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+            (window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=112303422', 'ym');
+            ym(112303422, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});`,
+          }}
+        />
       </head>
       <body>
+        <Suspense fallback={null}>
+          <YandexMetrika />
+        </Suspense>
         {children}
         <noscript>
           <img
@@ -54,6 +71,15 @@ export default function RootLayout({
             src="https://www.facebook.com/tr?id=1262305699373857&ev=PageView&noscript=1"
             alt=""
           />
+        </noscript>
+        <noscript>
+          <div>
+            <img
+              src="https://mc.yandex.ru/watch/112303422"
+              style={{ position: "absolute", left: "-9999px" }}
+              alt=""
+            />
+          </div>
         </noscript>
       </body>
     </html>

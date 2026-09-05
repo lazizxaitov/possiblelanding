@@ -1,14 +1,21 @@
 "use client";
 
-﻿import Image from "next/image";
+import Link from "next/link";
+import Image from "next/image";
 import { useEffect } from "react";
+
+type WindowWithFbq = Window & {
+  fbq?: (...args: unknown[]) => void;
+};
 
 export default function SuccessPage() {
   useEffect(() => {
-    if (typeof window !== "undefined" && (window as any).fbq) {
-      (window as any).fbq("track", "Lead");
+    const fbq = (window as WindowWithFbq).fbq;
+    if (typeof fbq === "function") {
+      fbq("track", "Lead");
     }
   }, []);
+
   return (
     <div className="lp">
       <header className="hero" id="top">
@@ -24,11 +31,15 @@ export default function SuccessPage() {
           </div>
           <p className="hero-title">Arizangiz qabul qilindi</p>
           <p className="hero-subtitle">
-            Tez orada siz bilan bog'lanamiz. Agar kutishni xohlamasangiz,
-            to'g'ridan to'g'ri qo'ng'iroq qiling.
+            Tez orada siz bilan bog&apos;lanamiz. Agar kutishni xohlamasangiz,
+            to&apos;g&apos;ridan to&apos;g&apos;ri qo&apos;ng&apos;iroq qiling.
           </p>
-          <a className="cta" href="tel:+998958331020">+998958331020</a>
-          <a className="cta secondary" href="/">Ortga qaytish</a>
+          <a className="cta" href="tel:+998958331020">
+            +998958331020
+          </a>
+          <Link className="cta secondary" href="/">
+            Ortga qaytish
+          </Link>
         </div>
       </header>
     </div>
