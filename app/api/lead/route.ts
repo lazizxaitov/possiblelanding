@@ -27,7 +27,8 @@ export async function POST(request: Request) {
     }
 
     if (!AMOCRM_TOKEN) {
-      return jsonResponse({ ok: false, error: "missing_env" }, 500);
+      console.error("AMOCRM_ACCESS_TOKEN is not configured");
+      return jsonResponse({ ok: false, error: "missing_env" }, 503);
     }
 
     const now = Math.floor(Date.now() / 1000);
@@ -80,21 +81,28 @@ export async function POST(request: Request) {
       },
     ];
 
-    const res = await fetch(
-      `https://${AMOCRM_SUBDOMAIN}.amocrm.ru/api/v4/leads/unsorted/forms`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${AMOCRM_TOKEN}`,
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify(payload),
-      }
-    );
+    let res: Response;
+    try {
+      res = await fetch(
+        `https://${AMOCRM_SUBDOMAIN}.amocrm.ru/api/v4/leads/unsorted/forms`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${AMOCRM_TOKEN}`,
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify(payload),
+        }
+      );
+    } catch (error) {
+      console.error("amoCRM request failed", error);
+      return jsonResponse({ ok: false, error: "amocrm_unreachable" }, 502);
+    }
 
     if (!res.ok) {
       const errorText = await res.text().catch(() => "");
+      console.error("amoCRM rejected lead", res.status, errorText);
       return jsonResponse(
         {
           ok: false,
